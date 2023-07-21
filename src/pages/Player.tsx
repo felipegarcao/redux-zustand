@@ -32,7 +32,7 @@ export function Player() {
                 key={module.id}
                 moduleIndex={index}
                 title={module.title}
-                amountOfLessons={module.lessons.length}
+                amountOfLessons={module?.lessons?.length}
               />
             ))}
           </aside>

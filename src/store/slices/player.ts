@@ -28,9 +28,22 @@ const playerSlice = createSlice({
           ],
         },
       ],
-    }
+    },
+    currentModuleIndex: 0,
+    currentLessonIndex: 0
   },
-  reducers: {}
+  reducers: {
+    play: (state, action) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      state.currentModuleIndex = action.payload[0]
+         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      state.currentLessonIndex = action.payload[1]
+      
+    }
+  }
 })
 
 export const player = playerSlice.reducer
+
+export const { play }
+= playerSlice.actions
