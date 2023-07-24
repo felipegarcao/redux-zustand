@@ -27,7 +27,7 @@ export function Module({ title, amountOfLessons, moduleIndex }: ModuleProps) {
   const lessons = useAppSelector(state => state.player.course.modules[moduleIndex].lessons)
 
   return (
-    <Collapsed.Root className='group'>
+    <Collapsed.Root className='group' defaultOpen={moduleIndex === 0}>
       <Collapsed.Trigger className='flex w-full items-center gap-3 bg-zinc-800 p-4'>
         <div className='flex h-10 w-10 rounded-full items-center justify-center bg-zinc-950 text-xs'>
           {moduleIndex + 1}

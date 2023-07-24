@@ -1,4 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { useAppSelector } from '..'
 
 const playerSlice = createSlice({
   name: 'player',
@@ -33,17 +34,49 @@ const playerSlice = createSlice({
     currentLessonIndex: 0
   },
   reducers: {
-    play: (state, action) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+    play: (state, action: PayloadAction<[number, number]>) => {
       state.currentModuleIndex = action.payload[0]
-         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       state.currentLessonIndex = action.payload[1]
-      
+    },
+    next: (state) => {
+      const nextLessonIndex = state.currentLessonIndex + 1
+      const nextLesson = state.course.modules[state.currentModuleIndex].lessons[nextLessonIndex]
+
+      if (nextLesson) {
+        state.currentLessonIndex = nextLessonIndex
+      } else {
+        const nextModuleIndex = state.currentModuleIndex + 1
+        const nextModule = state.course.modules[nextModuleIndex]
+
+        if (nextModule) {
+          state.currentModuleIndex = nextModuleIndex
+          state.currentLessonIndex = 0
+        }
+      }
     }
   }
 })
 
 export const player = playerSlice.reducer
 
-export const { play }
-= playerSlice.actions
+export const { play, next }
+  = playerSlice.actions
+
+
+
+export const useCurrentLesson = () => {
+  return useAppSelector(state => {
+    const { currentLessonIndex, currentModuleIndex } = state.player
+
+
+    const currentModule = state.player.course.modules[currentLessonIndex]
+
+    const currentLesson = currentModule.lessons[currentModuleIndex]
+
+
+    return {
+      currentModule,
+      currentLesson
+    }
+  })
+}
